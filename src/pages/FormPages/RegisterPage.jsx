@@ -8,6 +8,7 @@ import { Button } from './FormPage.styled';
 import { FormContainer } from './FormPage.styled';
 import { useDispatch } from 'react-redux';
 import { registerThunk } from '../../redux/auth/auth.reducer';
+import Notiflix from 'notiflix';
 
 const RegisterPage = () => {
   const dispatch = useDispatch();
@@ -18,7 +19,12 @@ const RegisterPage = () => {
     const password = evt.currentTarget.elements.userPassword.value;
 
     const formData = { name, email, password };
-    dispatch(registerThunk(formData));
+    dispatch(registerThunk(formData))
+      .unwrap()
+      .then(() => evt.target.reset())
+      .catch(() => {
+        Notiflix.Notify.failure(`Error, please try again`);
+      });
   };
   return (
     <FormContainer>

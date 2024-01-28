@@ -26,8 +26,14 @@ const LoginPage = () => {
     };
     console.log('formDataLogin: ', formData);
 
-    dispatch(loginThunk(formData));
-    Notiflix.Notify.success(`Authentication was successful`);
+    dispatch(loginThunk(formData))
+    .unwrap()
+      .then(() => Notiflix.Notify.success('Login Success'))
+      .catch(() => {
+        Notiflix.Notify.failure(
+          'Login or password incorrectly, please try again'
+        );
+      });
   };
   return (
      <FormContainer>
